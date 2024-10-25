@@ -6,6 +6,7 @@ from .base import BaseSearchFilterHandler
 
 
 class TextFilterHandler(BaseSearchFilterHandler):
+    """Класс для проведения поиска по содержимому файла."""
 
     @staticmethod
     def can_handle(search_filter: SearchFilter) -> bool:

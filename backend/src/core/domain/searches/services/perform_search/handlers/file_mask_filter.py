@@ -7,6 +7,7 @@ from .base import BaseSearchFilterHandler
 
 
 class FileMaskFilterHandler(BaseSearchFilterHandler):
+    """Класс для проведения поиска по маске имени файла."""
 
     @staticmethod
     def can_handle(search_filter: SearchFilter) -> bool:

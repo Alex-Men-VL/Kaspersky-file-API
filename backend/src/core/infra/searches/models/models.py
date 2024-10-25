@@ -85,14 +85,14 @@ class SearchFilter(BaseModel):
 
         constraints = [
             models.CheckConstraint(
-                check=(
+                condition=(
                     models.Q(size__isnull=True, size_operator__exact='')
                     | models.Q(size__isnull=False, size_operator__isnull=False)
                 ),
                 name='size_and_operator_both_null_or_both_filled',
             ),
             models.CheckConstraint(
-                check=(
+                condition=(
                     models.Q(creation_date__isnull=True, creation_date_operator__exact='')
                     | models.Q(creation_date__isnull=False, creation_date_operator__isnull=False)
                 ),

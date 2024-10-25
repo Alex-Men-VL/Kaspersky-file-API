@@ -8,8 +8,11 @@ from core.infra.searches.models.queryset import SearchQuerySet
 class SearchReadRepository(BaseReadRepository):
     model = Search
 
-    def get_one(self, search_id: UUID) -> Search | None:
-        return self.db.filter(search_id=search_id).first()
+    def get_one(self, search_id: UUID) -> Search:
+        return self.db.get(search_id=search_id)
+
+    def get_last(self) -> Search | None:
+        return self.db.last()
 
     def get_many(self) -> 'SearchQuerySet':
         return self.db.all()

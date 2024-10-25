@@ -3,6 +3,8 @@ import operator
 from datetime import datetime
 from pathlib import Path
 
+from django.utils.timezone import make_aware, make_naive
+
 from core.domain.searches.services.perform_search.handlers.base import BaseSearchFilterHandler
 from core.infra.searches.constants import SearchFilterOperatorChoices
 from core.infra.searches.models import SearchFilter
@@ -12,6 +14,7 @@ logger = logging.getLogger('search_handler')
 
 
 class CreationDateFilterHandler(BaseSearchFilterHandler):
+    """Класс для проведения поиска по дате создания."""
 
     @staticmethod
     def can_handle(search_filter: SearchFilter) -> bool:
@@ -35,9 +38,8 @@ class CreationDateFilterHandler(BaseSearchFilterHandler):
         if date_operator is None:
             logger.error(f'Неизвестный оператор сравнения: {creation_date_operator}')
             return False
-
         try:
-            return date_operator(created_at, search_filter.creation_date)
+            return date_operator(created_at, make_naive(search_filter.creation_date))
         except Exception as e:
             logger.error(f'Ошибка выполнения фильтрации по дате создания файла: {e}')
             return False

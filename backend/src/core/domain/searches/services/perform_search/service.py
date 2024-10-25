@@ -12,6 +12,7 @@ from core.infra.searches.models import (
     Search,
     SearchFilter,
 )
+from core.infra.searches.repositories.search import search_read_repository
 
 from .exceptions import SearchDirectoryNotFoundError
 from .handlers.base import BaseSearchFilterHandler
@@ -45,13 +46,21 @@ class PerformSearchService:
             CreationDateFilterHandler(),
         ]
 
-    def run(self, search_id: int) -> None:
-        threading.Thread(target=self._perform_search, args=(search_id,), daemon=True).start()
+    def run(self, search_id: int, daemon: bool = True) -> threading.Thread:
+        thread = threading.Thread(
+            target=self.perform_search,
+            args=(search_id,),
+            daemon=daemon,
+            name=f'PerformSearch-{search_id}',
+        )
+        thread.start()
+
+        return thread
 
     def _get_search(self, search_id: int) -> Search:
         for attempt in range(self.max_retries):
             try:
-                return Search.objects.get(pk=search_id)
+                return search_read_repository.get_one(search_id=search_id)
             except Search.DoesNotExist:
                 if attempt < self.max_retries - 1:
                     sleep(self.delay)
@@ -60,7 +69,7 @@ class PerformSearchService:
                 logger.error(f'Поисковой запрос №{search_id} не найден')
                 raise
 
-    def _perform_search(self, search_id: int) -> None:
+    def perform_search(self, search_id: int) -> None:
         logger.info(f'Запуск поиска файлов для {search_id}...')
 
         search = self._get_search(search_id=search_id)

@@ -9,8 +9,6 @@ from django.conf import settings
 from base.domain.rules import IRule
 from base.domain.usecases import BaseUseCase
 from core.domain.searches.rules import (
-    FilterOperatorMustHaveValue,
-    FilterValueMustHaveOperator,
     SizeFilterMustBePositive,
 )
 from core.domain.searches.services.perform_search import PerformSearchService
@@ -40,22 +38,6 @@ class CreateSearchUseCase(BaseUseCase):
 
     def rules(self) -> list[IRule]:
         return [
-            FilterValueMustHaveOperator(
-                filter_label='Размер',
-                comparable_value=self.size,
-            ),
-            FilterOperatorMustHaveValue(
-                filter_label='Размер',
-                comparable_value=self.size,
-            ),
-            FilterValueMustHaveOperator(
-                filter_label='Дата создания',
-                comparable_value=self.creation_time,
-            ),
-            FilterOperatorMustHaveValue(
-                filter_label='Дата создания',
-                comparable_value=self.creation_time,
-            ),
             SizeFilterMustBePositive(
                 size=self.size.value,
             ),

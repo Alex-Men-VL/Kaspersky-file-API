@@ -9,6 +9,7 @@ logger = logging.getLogger('search_handler')
 
 
 class SizeFilterHandler(BaseSearchFilterHandler):
+    """Класс для проведения поиска по размеру файла."""
 
     @staticmethod
     def can_handle(search_filter: SearchFilter) -> bool:
