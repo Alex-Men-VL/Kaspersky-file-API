@@ -1,10 +1,8 @@
 import {Button, Col, Row} from 'antd';
 import React, {useCallback, useState} from 'react';
 import {useBoolean} from 'ahooks';
-import {showErrorNotification} from 'shared/utils/notifications';
 import SearchList from 'modules/search/components/SearchList';
 import {useCreateSearch} from 'modules/search/hooks/useCreateSearch';
-import {createSearchNotPossibleErrMsg} from 'modules/search/constants';
 import {parseSearchValues} from 'modules/search/utils';
 import {useGetSearchList} from 'modules/search/hooks/useGetSearchList';
 
@@ -44,15 +42,6 @@ const SearchPage = () => {
 
   const onCreateSearch = useCallback(async (values) => {
     const parsedValues = parseSearchValues(values)
-    const { text, fileMask, size, creationTime } = parsedValues
-
-    const isAnyFieldFilled =
-        text || fileMask || size?.value || creationTime?.value;
-
-    if (!isAnyFieldFilled) {
-      showErrorNotification(createSearchNotPossibleErrMsg)
-      return
-    }
 
     try {
       await createSearchMutation(parsedValues).unwrap()

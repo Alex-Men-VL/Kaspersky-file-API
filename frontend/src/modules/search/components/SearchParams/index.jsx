@@ -1,5 +1,5 @@
-import { Descriptions } from 'antd';
-import {OperatorDict} from 'modules/search/constants';
+import { Descriptions } from 'antd'
+import { OperatorDict } from 'modules/search/constants'
 
 const SearchParams = ({ params }) => {
   const { text, fileMask, size, sizeOperator, creationDate, creationDateOperator } = params || {};
