@@ -10,6 +10,7 @@ from .models import (
     SearchFilter,
 )
 
+
 empty_search_filter = Recipe(SearchFilter)
 
 search_filter = empty_search_filter.extend(

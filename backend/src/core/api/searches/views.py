@@ -16,9 +16,10 @@ from core.api.common.openapi_serializers import (
     NotFoundResponse,
 )
 from core.api.controllers import catch_use_case_errors_as_view
+from core.domain.searches.dto import FilterComparableValueDTO
 from core.domain.searches.usecases.create_search import CreateSearchUseCase
 from core.infra.searches.constants import SearchFilterOperatorChoices
-from core.infra.searches.repositories.search import search_read_repository
+from core.infra.searches.models import Search
 
 
 class SearchViewSet(ViewSet):
@@ -114,8 +115,8 @@ class SearchViewSet(ViewSet):
         use_case = CreateSearchUseCase(
             text=in_serializer.validated_data.get('text', ''),
             file_mask=in_serializer.validated_data.get('file_mask', ''),
-            default_size=in_serializer.validated_data.get('size'),
-            default_creation_time=in_serializer.validated_data.get('creation_time'),
+            size=FilterComparableValueDTO.from_dict(in_serializer.validated_data.get('size')),
+            creation_time=FilterComparableValueDTO.from_dict(in_serializer.validated_data.get('creation_time')),
         )
 
         search = use_case.execute()
@@ -133,7 +134,7 @@ class SearchViewSet(ViewSet):
         },
     )
     def retrieve(self, request, search_id, *args, **kwargs):
-        search = get_object_or_404(search_read_repository.get_many().with_search_filter(), search_id=search_id)
+        search = get_object_or_404(Search.objects.select_related('search_filter'), search_id=search_id)
 
         out_serializer = self.SearchSerializer(instance=search)
 
@@ -148,7 +149,7 @@ class SearchViewSet(ViewSet):
         },
     )
     def list(self, request, *args, **kwargs):
-        searches = search_read_repository.get_many().with_search_filter().order_by('-created_at')
+        searches = Search.objects.select_related('search_filter').order_by('-created_at')
 
         out_serializer = self.SearchListSerializer(searches, many=True)
 

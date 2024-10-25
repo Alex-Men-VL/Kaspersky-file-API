@@ -1,6 +1,5 @@
+import mmap
 from pathlib import Path
-
-from core.infra.searches.models import SearchFilter
 
 from .base import BaseSearchFilterHandler
 
@@ -8,9 +7,10 @@ from .base import BaseSearchFilterHandler
 class TextFilterHandler(BaseSearchFilterHandler):
     """Класс для проведения поиска по содержимому файла."""
 
-    @staticmethod
-    def can_handle(search_filter: SearchFilter) -> bool:
-        return bool(search_filter.text)
-
-    def handle(self, file_path: Path, search_filter: SearchFilter):
-        return search_filter.text in file_path.read_text()
+    def handle(self, file_path: Path):
+        with file_path.open(encoding='utf-8') as fp:
+            try:
+                with mmap.mmap(fp.fileno(), length=0, access=mmap.ACCESS_READ) as mobj:
+                    return self.value.encode('utf-8') in mobj.read()
+            except ValueError:
+                return False

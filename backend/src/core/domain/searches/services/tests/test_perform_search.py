@@ -22,13 +22,10 @@ def test_perform_search_by_text(tmp_path):
     f2 = nested_path / 'e.txt'
     f2.write_text(text)
 
-    search_filter = searches_recipes.empty_search_filter.make(
-        text=text
-    )
+    search_filter = searches_recipes.empty_search_filter.make(text=text)
     search = searches_recipes.search.make(search_filter=search_filter)
-    service = PerformSearchService(search_dir=tmp_path)
 
-    service.perform_search(search.search_id)
+    PerformSearchService(search_dir=tmp_path, search=search).execute()
 
     search.refresh_from_db()
 
@@ -50,13 +47,10 @@ def test_perform_search_by_file_mask(tmp_path):
     f2 = nested_path / 'ba.txt'
     f2.touch()
 
-    search_filter = searches_recipes.empty_search_filter.make(
-        file_mask=file_mask
-    )
+    search_filter = searches_recipes.empty_search_filter.make(file_mask=file_mask)
     search = searches_recipes.search.make(search_filter=search_filter)
-    service = PerformSearchService(search_dir=tmp_path)
 
-    service.perform_search(search.search_id)
+    PerformSearchService(search_dir=tmp_path, search=search).execute()
 
     search.refresh_from_db()
 
@@ -81,9 +75,8 @@ def test_perform_search_by_file_size(tmp_path):
         size_operator=SearchFilterOperatorChoices.EQUAL,
     )
     search = searches_recipes.search.make(search_filter=search_filter)
-    service = PerformSearchService(search_dir=tmp_path)
 
-    service.perform_search(search.search_id)
+    PerformSearchService(search_dir=tmp_path, search=search).execute()
 
     search.refresh_from_db()
 
@@ -109,9 +102,8 @@ def test_perform_search_by_creation_date(tmp_path):
         creation_date_operator=SearchFilterOperatorChoices.EQUAL,
     )
     search = searches_recipes.search.make(search_filter=search_filter)
-    service = PerformSearchService(search_dir=tmp_path)
 
-    service.perform_search(search.search_id)
+    PerformSearchService(search_dir=tmp_path, search=search).execute()
 
     search.refresh_from_db()
 

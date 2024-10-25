@@ -17,7 +17,6 @@ ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv(), default='')
 
 # Application definition
 
-
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +26,12 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = ['rest_framework', 'drf_spectacular', 'corsheaders']
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'drf_spectacular',
+    'corsheaders',
+    'huey.contrib.djhuey',
+]
 
 CORE_APPS = [
     'core.infra.searches',
@@ -105,7 +109,7 @@ LOGGING = {
             'handlers': ['console'],
             'level': LOG_LEVEL,
         },
-        'services': {
+        'tasks': {
             'handlers': ['console'],
             'level': LOG_LEVEL,
         },
@@ -199,6 +203,27 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', cast=bool, default=True)
 CORS_ALLOW_CREDENTIALS = config('CORS_ALLOW_CREDENTIALS', cast=bool, default=True)
+
+HUEY = {
+    'huey_class': 'huey.RedisHuey',  # Huey implementation to use.
+    'name': config('SCHEDULER_NAME', default='scheduler'),
+    'immediate': False,  # Disable async mode
+    'utc': True,
+    'connection': {
+        'url': config('SCHEDULER_REDIS_URL', default=''),
+    },
+    'consumer': {
+        'workers': config('SCHEDULER_WORKERS', default=1, cast=int),
+        'worker_type': 'thread',
+        'backoff': 1.15,  # Exponential backoff using this rate, -b.
+        'scheduler_interval': 5,  # Check schedule every second, -s.
+        'periodic': config(
+            'SCHEDULER_ENABLE_PERIODIC',
+            default=True,
+            cast=bool,
+        ),
+    },
+}
 
 # Директория поиска файлов
 SEARCH_DIRECTORY = config('SEARCH_DIRECTORY')

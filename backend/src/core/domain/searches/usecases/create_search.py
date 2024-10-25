@@ -1,21 +1,17 @@
 from dataclasses import (
     dataclass,
     field,
-    InitVar,
 )
-
-from django.conf import settings
 
 from base.domain.rules import IRule
 from base.domain.usecases import BaseUseCase
-from core.domain.searches.rules import (
-    SizeFilterMustBePositive,
+from core.domain.searches.dto import FilterComparableValueDTO
+from core.domain.searches.rules import SizeFilterMustBePositive
+from core.domain.searches.tasks import perform_search
+from core.infra.searches.models import (
+    Search,
+    SearchFilter,
 )
-from core.domain.searches.services.perform_search import PerformSearchService
-from core.infra.searches.dto import FilterComparableValueDTO
-from core.infra.searches.models import Search
-from core.infra.searches.repositories.search import search_write_repository
-from core.infra.searches.repositories.search_filter import search_filter_write_repository
 
 
 @dataclass(kw_only=True)
@@ -23,18 +19,8 @@ class CreateSearchUseCase(BaseUseCase):
     text: str = ''
     file_mask: str = ''
 
-    default_size: InitVar[dict | None] = None
-    default_creation_time: InitVar[dict | None] = None
-
-    size: FilterComparableValueDTO | None = field(init=False, default_factory=FilterComparableValueDTO)
-    creation_time: FilterComparableValueDTO | None = field(init=False, default_factory=FilterComparableValueDTO)
-
-    def __post_init__(self, default_size: dict | None, default_creation_time: dict | None):
-        if default_size and isinstance(default_size, dict):
-            self.size = FilterComparableValueDTO.from_dict(default_size)
-
-        if default_creation_time and isinstance(default_creation_time, dict):
-            self.creation_time = FilterComparableValueDTO.from_dict(default_creation_time)
+    size: FilterComparableValueDTO = field(default_factory=FilterComparableValueDTO)
+    creation_time: FilterComparableValueDTO = field(default_factory=FilterComparableValueDTO)
 
     def rules(self) -> list[IRule]:
         return [
@@ -44,7 +30,7 @@ class CreateSearchUseCase(BaseUseCase):
         ]
 
     def action(self) -> Search:
-        search_filter = search_filter_write_repository.create_one(
+        search_filter = SearchFilter.objects.create(
             text=self.text,
             file_mask=self.file_mask,
             size=self.size.value,
@@ -53,8 +39,8 @@ class CreateSearchUseCase(BaseUseCase):
             creation_date_operator=self.creation_time.operator,
         )
 
-        search = search_write_repository.create_one(search_filter_id=search_filter.pk)
+        search = Search.objects.create(search_filter_id=search_filter.pk)
 
-        PerformSearchService(search_dir=settings.SEARCH_DIRECTORY).run(search.pk)
+        perform_search(search)
 
         return search

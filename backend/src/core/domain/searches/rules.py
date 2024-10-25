@@ -4,9 +4,7 @@ from base.domain.rules import (
     DomainRule,
     IRule,
 )
-from core.domain.searches.constants import (
-    SIZE_FILTER_MUST_BE_POSITIVE_ERROR,
-)
+from core.domain.searches.constants import SIZE_FILTER_MUST_BE_POSITIVE_ERROR
 
 
 @dataclass(frozen=True)

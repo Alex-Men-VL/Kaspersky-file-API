@@ -1,10 +1,11 @@
 import abc
 import logging
+import operator
+from functools import cached_property
 from pathlib import Path
+from typing import Any
 
-from django.db import transaction
-
-from core.infra.searches.models import SearchFilter
+from core.infra.searches.constants import SearchFilterOperatorChoices
 
 
 logger = logging.getLogger('services')
@@ -13,25 +14,52 @@ logger = logging.getLogger('services')
 class BaseSearchFilterHandler(abc.ABC):
     """Абстрактный класс для проведения поиска по определенному фильтру."""
 
-    @staticmethod
-    def can_handle(search_filter: SearchFilter) -> bool:
-        """Выполняет проверку корректности фильтра."""
-
-        return False
+    def __init__(self, value: Any) -> None:
+        self.value = value
 
     @abc.abstractmethod
-    def handle(self, file_path: Path, search_filter: SearchFilter) -> bool:
+    def handle(self, file_path: Path) -> bool:
         """Выполняет непосредственные действие фильтра."""
 
         raise NotImplementedError
 
-    @transaction.atomic
-    def execute(self, file_path: Path, search_filter: SearchFilter) -> bool:
-        if not self.can_handle(search_filter):
-            return True
-
+    def execute(self, file_path: Path) -> bool:
         try:
-            return self.handle(file_path, search_filter)
+            return self.handle(file_path)
+        except FileNotFoundError:
+            logger.debug(f'File not found: {file_path}')
+            return False
+
+
+class BaseSearchOperatorFilterHandler(abc.ABC):
+    """Абстрактный класс для проведения поиска по определенному фильтру."""
+
+    def __init__(self, value: Any, value_operator: str) -> None:
+        self.value = value
+        if value_operator not in self.operators:
+            raise ValueError(f'Неизвестный оператор сравнения: {value_operator}')
+
+        self.value_operator = value_operator
+
+    @cached_property
+    def operators(self) -> dict:
+        return {
+            SearchFilterOperatorChoices.EQUAL.label: operator.eq,
+            SearchFilterOperatorChoices.GREATER_THAN.label: operator.gt,
+            SearchFilterOperatorChoices.LESS_THAN.label: operator.lt,
+            SearchFilterOperatorChoices.GREATER_THAN_EQUAL.label: operator.ge,
+            SearchFilterOperatorChoices.LESS_THAN_EQUAL.label: operator.le,
+        }
+
+    @abc.abstractmethod
+    def handle(self, file_path: Path) -> bool:
+        """Выполняет непосредственные действие фильтра."""
+
+        raise NotImplementedError
+
+    def execute(self, file_path: Path) -> bool:
+        try:
+            return self.handle(file_path)
         except FileNotFoundError:
             logger.debug(f'File not found: {file_path}')
             return False

@@ -2,8 +2,8 @@ from django.db import models
 
 
 class SearchQuerySet(models.QuerySet):
-    def with_search_filter(self) -> 'SearchQuerySet':
-        return self.select_related('search_filter')
+    def new(self) -> 'SearchQuerySet':
+        return self.filter(finished=False)
 
 
 class SearchManager(models.Manager.from_queryset(SearchQuerySet)):  # type: ignore

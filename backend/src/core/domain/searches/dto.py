@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from base.infra.dto import FromDictMixin
+from base.domain.dto import FromDictMixin
 
 
 @dataclass

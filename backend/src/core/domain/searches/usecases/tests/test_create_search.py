@@ -1,11 +1,11 @@
 from unittest.mock import patch
 
 import pytest
-
 from model_bakery import random_gen
 
 from base.domain.exceptions import DomainRuleException
 from core.domain.searches.constants import SIZE_FILTER_MUST_BE_POSITIVE_ERROR
+from core.domain.searches.dto import FilterComparableValueDTO
 from core.domain.searches.usecases.create_search import CreateSearchUseCase
 from core.infra.searches.constants import SearchFilterOperatorChoices
 
@@ -14,18 +14,18 @@ def test_create_search():
     use_case = CreateSearchUseCase(
         text=random_gen.gen_string(10),
         file_mask=random_gen.gen_string(10),
-        default_size={
-            'value': random_gen.gen_integer(1, 10),
-            'operator': random_gen.gen_from_choices(SearchFilterOperatorChoices.choices)(),
-        },
-        default_creation_time={
-            'value': random_gen.gen_datetime(),
-            'operator': random_gen.gen_from_choices(SearchFilterOperatorChoices.choices)(),
-        },
+        size=FilterComparableValueDTO(
+            value=random_gen.gen_integer(1, 10),
+            operator=random_gen.gen_from_choices(SearchFilterOperatorChoices.choices)(),
+        ),
+        creation_time=FilterComparableValueDTO(
+            value=random_gen.gen_datetime(),
+            operator=random_gen.gen_from_choices(SearchFilterOperatorChoices.choices)(),
+        ),
     )
 
-    with patch('core.domain.searches.usecases.create_search.PerformSearchService.run') as mock_create_search:
-        mock_create_search.return_value = None
+    with patch('core.domain.searches.usecases.create_search.perform_search') as mock_perform_search:
+        mock_perform_search.return_value = None
 
         search = use_case.execute()
 
@@ -44,13 +44,13 @@ def test_create_search_size_not_positive(size_value):
     use_case = CreateSearchUseCase(
         text=random_gen.gen_string(10),
         file_mask=random_gen.gen_string(10),
-        default_size={
-            'value': size_value,
-            'operator': random_gen.gen_from_choices(SearchFilterOperatorChoices.choices)(),
-        },
+        size=FilterComparableValueDTO(
+            value=size_value,
+            operator=random_gen.gen_from_choices(SearchFilterOperatorChoices.choices)(),
+        ),
     )
-    with patch('core.domain.searches.usecases.create_search.PerformSearchService.run') as mock_create_search:
-        mock_create_search.return_value = None
+    with patch('core.domain.searches.usecases.create_search.perform_search') as mock_perform_search:
+        mock_perform_search.return_value = None
 
         with pytest.raises(DomainRuleException) as exc:
             use_case.execute()
