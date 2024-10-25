@@ -1,6 +1,5 @@
 import {Divider, Drawer, Space, Typography} from 'antd';
 import {useGetSearch} from 'modules/search/hooks/useGetSearch';
-import {getSearchIdTitle} from 'modules/search/utils';
 import LoadingArea from 'components/LoadingArea';
 import SearchStatus from 'modules/search/components/SearchDetail/SearchStatus';
 import {searchStatusDict} from 'modules/search/constants';
@@ -11,7 +10,7 @@ import SearchResultsList from 'modules/search/components/SearchDetail/SearchResu
 import SearchParams from 'modules/search/components/SearchParams';
 import SearchDetailTitle from 'modules/search/components/SearchDetail/SearchDetailTitle';
 
-const { Text, Title } = Typography
+const { Text } = Typography
 
 const SearchDetail = ({search, onClose}) => {
 

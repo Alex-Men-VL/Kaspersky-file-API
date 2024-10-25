@@ -1,4 +1,3 @@
-import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
 
 
@@ -10,7 +9,7 @@ import {MimetypeEnum} from 'shared/constants/mimetype';
 
 const baseQuery =
   ({ basePath, apiVersion }) =>
-  async ({ url, method = HttpMethodEnum.Get, data, params, headers }, api) => {
+  async ({ url, method = HttpMethodEnum.Get, data, params, headers }) => {
     try {
       const response = await httpClient({
         url: makeRelativeApiUrl(url, basePath, apiVersion),

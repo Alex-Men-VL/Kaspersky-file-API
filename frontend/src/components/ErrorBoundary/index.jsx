@@ -1,6 +1,6 @@
 import {isRouteErrorResponse, Link, useRouteError} from 'react-router-dom'
 import {isNotFoundError} from 'shared/services/baseApi'
-import {Flex, Layout, Typography} from 'antd';
+import {Flex, Typography} from 'antd';
 import {CommonRouteEnum} from 'configs/routes';
 
 const { Title } = Typography

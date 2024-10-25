@@ -1,15 +1,12 @@
-import {useGetSearchListQuery, useGetSearchQuery} from 'modules/search/services/searchApi.service';
+import {useGetSearchListQuery} from 'modules/search/services/searchApi.service';
 import {useEffect} from 'react';
 import {
   getErrorMessage,
   isBadRequestError,
   isErrorResponse,
-  isNotFoundError,
-  isServerRangeError
 } from 'shared/services/baseApi';
 import {showErrorNotification} from 'shared/utils/notifications';
-import {getSearchNotFoundErrMsg, getSearchServerErrMsg} from 'modules/search/utils';
-import {getSearchErrMsg, getSearchListErrMsg} from 'modules/search/constants';
+import {getSearchListErrMsg} from 'modules/search/constants';
 
 export const useGetSearchList = () => {
   const state = useGetSearchListQuery()

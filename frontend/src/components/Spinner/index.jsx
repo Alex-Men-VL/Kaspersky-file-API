@@ -9,7 +9,7 @@ const SpinnerStyle = {
 }
 
 const Spinner = ({ tip, ...props }) => {
-  return Boolean(tip) ? (
+  return tip ? (
     <Spin tip={tip} style={SpinnerStyle} {...props}>
       {/**
          - div as children for preventing warning "tip only work in nest pattern"

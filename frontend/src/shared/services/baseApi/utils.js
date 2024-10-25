@@ -5,9 +5,8 @@ import isObject from 'lodash/isObject'
 
 import { HttpCodeEnum } from 'shared/constants'
 import { hasProperty } from 'shared/utils/common'
-import {apiPath, currentApiVersion} from 'shared/services/baseApi/constants';
-import {makeString} from 'shared/utils/string';
-import isString from 'lodash/isString';
+import {apiPath, currentApiVersion} from 'shared/services/baseApi/constants'
+import {makeString} from 'shared/utils/string'
 
 export const getErrorMessage = (error) => {
   return error.data?.message || ''

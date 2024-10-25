@@ -17,7 +17,7 @@ const Header = () => {
       <StyledHeader style={headerStyle}>
         <Row>
           <Col>
-            <Title level={3} style={{color: '#fff'}}>Тестовое задание – "API поиска файлов"</Title>
+            <Title level={3} style={{color: '#fff'}}>Тестовое задание – API поиска файлов</Title>
           </Col>
         </Row>
         <Row>

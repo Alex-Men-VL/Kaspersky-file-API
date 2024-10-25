@@ -36,11 +36,11 @@ const SearchPage = () => {
 
   const handleOpenCreateSearchModal = useCallback(() => {
     openCreateSearchModal()
-  }, [])
+  }, [openCreateSearchModal])
 
   const handleCloseCreateSearchModal = useCallback(() => {
     closeCreateSearchModal()
-  }, [])
+  }, [closeCreateSearchModal])
 
   const onCreateSearch = useCallback(async (values) => {
     const parsedValues = parseSearchValues(values)
