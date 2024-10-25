@@ -1,0 +1,2 @@
+export const getSearchNotFoundErrMsg = (searchId) => `Поисковой запрос с идентификатором ${searchId} не найден`
+export const getSearchServerErrMsg = (searchId) => `Ошибка получения поискового запроса с идентификатором ${searchId}`

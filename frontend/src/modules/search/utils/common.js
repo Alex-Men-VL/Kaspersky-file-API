@@ -1,0 +1,1 @@
+export const getSearchIdTitle = (searchId) => `Поисковой запрос №${searchId}`
