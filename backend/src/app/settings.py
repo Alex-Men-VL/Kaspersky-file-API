@@ -1,9 +1,11 @@
+from pathlib import Path
+
 from decouple import (
+    Choices,
     config,
-    Csv, Choices,
+    Csv,
 )
 
-from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -25,11 +27,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = [
-    'rest_framework',
-    'drf_spectacular',
-    'corsheaders'
-]
+THIRD_PARTY_APPS = ['rest_framework', 'drf_spectacular', 'corsheaders']
 
 CORE_APPS = [
     'core.infra.searches',

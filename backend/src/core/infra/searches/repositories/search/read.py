@@ -1,7 +1,5 @@
 from uuid import UUID
 
-from django.db.models import QuerySet
-
 from base.infra.repositories import BaseReadRepository
 from core.infra.searches.models.models import Search
 from core.infra.searches.models.queryset import SearchQuerySet

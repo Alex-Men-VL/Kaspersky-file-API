@@ -1,0 +1,26 @@
+[flake8]
+per-file-ignores =
+    # imported but unused
+    */__init__.py: F401,F403
+    */settings/*: F401,F403
+    */conftest.py: F401,F403
+
+max-line-length = 120
+exclude =
+    .git,
+    __pycache__,
+    venv/*,
+    */tests/*,
+    */migrations/*,
+jobs = 4
+
+
+[pycodestyle]
+max_line_length = 120
+jobs = 4
+exclude =
+    .git,
+    __pycache__,
+    venv/*,
+    */tests/*,
+    */migrations/*,

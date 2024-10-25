@@ -1,8 +1,6 @@
 from django.urls import path
 
-from .views import (
-    SearchViewSet,
-)
+from .views import SearchViewSet
 
 
 app_name = 'searches'

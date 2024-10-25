@@ -1,6 +1,13 @@
 from django.contrib import admin
-from django.urls import path, include
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.urls import (
+    include,
+    path,
+)
+
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
 
 from core.api.urls import urlpatterns as api_urlpatterns
 
@@ -8,7 +15,6 @@ from core.api.urls import urlpatterns as api_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(api_urlpatterns)),
-
     path(
         'api/schema/',
         SpectacularAPIView.as_view(),

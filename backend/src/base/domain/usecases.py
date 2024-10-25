@@ -3,7 +3,6 @@ from dataclasses import dataclass
 
 from django.db import transaction
 
-
 from .rules import check_rules
 
 

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from core.infra.searches.models import SearchFilter
+
 from .base import BaseSearchFilterHandler
 
 

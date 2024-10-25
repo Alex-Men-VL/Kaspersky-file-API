@@ -5,8 +5,11 @@ from base.domain.rules import (
     DomainRule,
     IRule,
 )
-from core.domain.searches.constants import FILTER_VALUE_MUST_HAVE_OPTION_ERROR, FILTER_OPTION_MUST_HAVE_VALUE_ERROR, \
-    SIZE_FILTER_MUST_BE_POSITIVE_ERROR
+from core.domain.searches.constants import (
+    FILTER_OPTION_MUST_HAVE_VALUE_ERROR,
+    FILTER_VALUE_MUST_HAVE_OPTION_ERROR,
+    SIZE_FILTER_MUST_BE_POSITIVE_ERROR,
+)
 from core.infra.searches.dto import FilterComparableValueDTO
 
 

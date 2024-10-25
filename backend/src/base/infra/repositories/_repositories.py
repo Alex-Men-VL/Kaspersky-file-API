@@ -14,7 +14,7 @@ class IRepository(metaclass=abc.ABCMeta):
     @property
     @abc.abstractmethod
     def db(self) -> Any:
-        ...
+        pass
 
 
 class IReadRepository(IRepository, metaclass=abc.ABCMeta):
@@ -27,19 +27,19 @@ class IReadRepository(IRepository, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def get_one(self, identifier):
-        ...
+        pass
 
     @abc.abstractmethod
     def get_many(self):
-        ...
+        pass
 
     @abc.abstractmethod
     def get_count(self) -> int:
-        ...
+        pass
 
     @abc.abstractmethod
     def exists(self, pk: int) -> bool:
-        ...
+        pass
 
 
 class IWriteRepository(IRepository, metaclass=abc.ABCMeta):
@@ -54,15 +54,15 @@ class IWriteRepository(IRepository, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def create_one(self, **kwargs):
-        ...
+        pass
 
     @abc.abstractmethod
     def update_one(self, **kwargs):
-        ...
+        pass
 
     @abc.abstractmethod
     def delete_one(self, identifier):
-        ...
+        pass
 
 
 class DjangoMixin:
@@ -74,8 +74,8 @@ class DjangoMixin:
 
 
 class BaseWriteRepository(DjangoMixin, IWriteRepository, metaclass=abc.ABCMeta):
-    ...
+    pass
 
 
 class BaseReadRepository(DjangoMixin, IReadRepository, metaclass=abc.ABCMeta):
-    ...
+    pass

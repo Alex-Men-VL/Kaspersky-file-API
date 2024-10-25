@@ -1,13 +1,17 @@
 import logging
 import os
 import threading
-from dataclasses import dataclass, field
+from dataclasses import (
+    dataclass,
+    field,
+)
 from pathlib import Path
 from time import sleep
 
-from django.conf import settings
-
-from core.infra.searches.models import Search, SearchFilter
+from core.infra.searches.models import (
+    Search,
+    SearchFilter,
+)
 
 from .exceptions import SearchDirectoryNotFoundError
 from .handlers.base import BaseSearchFilterHandler
@@ -38,7 +42,7 @@ class PerformSearchService:
             TextFilterHandler(),
             FileMaskFilterHandler(),
             SizeFilterHandler(),
-            CreationDateFilterHandler()
+            CreationDateFilterHandler(),
         ]
 
     def run(self, search_id: int) -> None:

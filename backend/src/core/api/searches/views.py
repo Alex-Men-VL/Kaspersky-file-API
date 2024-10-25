@@ -1,11 +1,19 @@
-from drf_spectacular.utils import extend_schema, inline_serializer
-from rest_framework import serializers, status
+from rest_framework import (
+    serializers,
+    status,
+)
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+from drf_spectacular.utils import (
+    extend_schema,
+    inline_serializer,
+)
+
 from core.api.common.openapi_serializers import (
-    BadRequestResponse, NotFoundResponse,
+    BadRequestResponse,
+    NotFoundResponse,
 )
 from core.api.controllers import catch_use_case_errors_as_view
 from core.domain.searches.usecases.create_search import CreateSearchUseCase
@@ -37,7 +45,7 @@ class SearchViewSet(ViewSet):
                 'value': serializers.IntegerField(),
                 'operator': serializers.ChoiceField(
                     choices=SearchFilterOperatorChoices.choices,
-                )
+                ),
             },
             write_only=True,
             allow_null=True,
@@ -50,7 +58,7 @@ class SearchViewSet(ViewSet):
                 'value': serializers.DateTimeField(),
                 'operator': serializers.ChoiceField(
                     choices=SearchFilterOperatorChoices.choices,
-                )
+                ),
             },
             write_only=True,
             allow_null=True,
@@ -124,7 +132,7 @@ class SearchViewSet(ViewSet):
             status.HTTP_404_NOT_FOUND: NotFoundResponse,
         },
     )
-    def retrieve(self, request, search_id,  *args, **kwargs):
+    def retrieve(self, request, search_id, *args, **kwargs):
         search = get_object_or_404(search_read_repository.get_many().with_search_filter(), search_id=search_id)
 
         out_serializer = self.SearchSerializer(instance=search)

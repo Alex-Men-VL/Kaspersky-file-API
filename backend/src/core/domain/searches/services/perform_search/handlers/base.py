@@ -6,6 +6,7 @@ from django.db import transaction
 
 from core.infra.searches.models import SearchFilter
 
+
 logger = logging.getLogger('services')
 
 

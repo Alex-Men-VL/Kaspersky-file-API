@@ -1,13 +1,18 @@
-import threading
-from dataclasses import dataclass, InitVar, field
-from time import sleep
+from dataclasses import (
+    dataclass,
+    field,
+    InitVar,
+)
 
 from django.conf import settings
 
 from base.domain.rules import IRule
 from base.domain.usecases import BaseUseCase
-from core.domain.searches.rules import FilterValueMustHaveOperator, FilterOperatorMustHaveValue, \
-    SizeFilterMustBePositive
+from core.domain.searches.rules import (
+    FilterOperatorMustHaveValue,
+    FilterValueMustHaveOperator,
+    SizeFilterMustBePositive,
+)
 from core.domain.searches.services.perform_search import PerformSearchService
 from core.infra.searches.dto import FilterComparableValueDTO
 from core.infra.searches.models import Search
@@ -29,7 +34,7 @@ class CreateSearchUseCase(BaseUseCase):
     def __post_init__(self, default_size: dict | None, default_creation_time: dict | None):
         if default_size and isinstance(default_size, dict):
             self.size = FilterComparableValueDTO.from_dict(default_size)
-            
+
         if default_creation_time and isinstance(default_creation_time, dict):
             self.creation_time = FilterComparableValueDTO.from_dict(default_creation_time)
 
@@ -43,7 +48,6 @@ class CreateSearchUseCase(BaseUseCase):
                 filter_label='Размер',
                 comparable_value=self.size,
             ),
-
             FilterValueMustHaveOperator(
                 filter_label='Дата создания',
                 comparable_value=self.creation_time,
@@ -54,7 +58,7 @@ class CreateSearchUseCase(BaseUseCase):
             ),
             SizeFilterMustBePositive(
                 size=self.size.value,
-            )
+            ),
         ]
 
     def action(self) -> Search:

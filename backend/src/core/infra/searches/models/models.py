@@ -4,8 +4,9 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from base.infra.models import BaseModel
-from .queryset import SearchManager
+
 from ..constants import SearchFilterOperatorChoices
+from .queryset import SearchManager
 
 
 class Search(BaseModel):
@@ -85,17 +86,16 @@ class SearchFilter(BaseModel):
         constraints = [
             models.CheckConstraint(
                 check=(
-                        models.Q(size__isnull=True, size_operator__exact='') |
-                        models.Q(size__isnull=False, size_operator__isnull=False)
+                    models.Q(size__isnull=True, size_operator__exact='')
+                    | models.Q(size__isnull=False, size_operator__isnull=False)
                 ),
-                name='size_and_operator_both_null_or_both_filled'
+                name='size_and_operator_both_null_or_both_filled',
             ),
             models.CheckConstraint(
                 check=(
-                        models.Q(creation_date__isnull=True, creation_date_operator__exact='') |
-                        models.Q(creation_date__isnull=False, creation_date_operator__isnull=False)
+                    models.Q(creation_date__isnull=True, creation_date_operator__exact='')
+                    | models.Q(creation_date__isnull=False, creation_date_operator__isnull=False)
                 ),
-                name='creation_date_and_operator_both_null_or_both_filled'
+                name='creation_date_and_operator_both_null_or_both_filled',
             ),
         ]
-

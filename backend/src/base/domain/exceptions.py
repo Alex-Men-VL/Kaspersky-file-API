@@ -7,12 +7,12 @@ class BusinessLogicException(Exception):
 
 
 class BusinessRuleTypeException(BusinessLogicException):
-    ...
+    pass
 
 
 class DomainRuleException(BusinessLogicException):
-    ...
+    pass
 
 
 class DomainPermissionException(BusinessLogicException):
-    ...
+    pass

@@ -1,8 +1,7 @@
 import logging
+import operator
 from datetime import datetime
 from pathlib import Path
-import operator
-
 
 from core.domain.searches.services.perform_search.handlers.base import BaseSearchFilterHandler
 from core.infra.searches.constants import SearchFilterOperatorChoices

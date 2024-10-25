@@ -1,1 +1,4 @@
-from .models import Search, SearchFilter
+from .models import (
+    Search,
+    SearchFilter,
+)
