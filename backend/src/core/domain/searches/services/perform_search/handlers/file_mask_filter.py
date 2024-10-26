@@ -1,10 +1,10 @@
 import fnmatch
 from pathlib import Path
 
-from .base import BaseSearchFilterHandler
+from .base import BaseSearchValueFilterHandler
 
 
-class FileMaskFilterHandler(BaseSearchFilterHandler):
+class FileMaskFilterHandler(BaseSearchValueFilterHandler):
     """Класс для проведения поиска по маске имени файла."""
 
     def handle(self, file_path: Path) -> bool:

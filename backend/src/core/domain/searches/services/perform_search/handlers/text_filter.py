@@ -1,10 +1,10 @@
 import mmap
 from pathlib import Path
 
-from .base import BaseSearchFilterHandler
+from .base import BaseSearchValueFilterHandler
 
 
-class TextFilterHandler(BaseSearchFilterHandler):
+class TextFilterHandler(BaseSearchValueFilterHandler):
     """Класс для проведения поиска по содержимому файла."""
 
     def handle(self, file_path: Path):
